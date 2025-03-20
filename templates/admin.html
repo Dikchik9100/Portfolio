@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Parking Spots</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Spot Number</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for spot in spots %}
+                            <tr>
+                                <td>{{ spot.spot_number }}</td>
+                                <td>
+                                    <span class="badge {% if spot.is_available %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ 'Available' if spot.is_available else 'Occupied' }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>All Bookings</h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Spot</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td>{{ booking.user.username }}</td>
+                                <td>{{ booking.spot.spot_number }}</td>
+                                <td>{{ booking.start_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>{{ booking.end_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td>
+                                    <span class="badge {% if booking.status == 'active' %}bg-success{% elif booking.status == 'completed' %}bg-secondary{% else %}bg-danger{% endif %}">
+                                        {{ booking.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
