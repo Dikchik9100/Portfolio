@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">My Bookings</h1>
+
+{% if bookings %}
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Spot Number</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.spot.spot_number }}</td>
+                <td>{{ booking.start_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ booking.end_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    <span class="badge {% if booking.status == 'active' %}bg-success{% elif booking.status == 'completed' %}bg-secondary{% else %}bg-danger{% endif %}">
+                        {{ booking.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">
+    You don't have any bookings yet. <a href="{{ url_for('index') }}">Book a spot now!</a>
+</div>
+{% endif %}
+{% endblock %}
